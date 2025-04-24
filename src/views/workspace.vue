@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <video autoplay muted loop class="background-video">
+    <div class="workspace">
+        <!-- <video autoplay muted loop class="background-video">
             <source src="/public/background/background.mp4" type="video/mp4" />
             您的浏览器不支持视频播放。
-        </video>
+        </video> -->
         <header class="navbar">
             <div class="navbar-container">
                 <div class="logo" @click="navigate('/')">AI3D 功能区</div>
@@ -41,17 +41,18 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     overflow: hidden; /* 防止滚动条 */
+    background-color: linear-gradient(to bottom, #f7f7f7, #e5e5e5);
 }
 
-.background-video {
+/* .background-video {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 确保视频覆盖整个背景 */
-    z-index: -1; /* 将视频置于内容后面 */
-}
+    object-fit: cover; 
+    z-index: -1;
+} */
 
 .navbar {
     height: 50px;
@@ -59,7 +60,7 @@ html, body {
     top: 0;
     left: 0; /* 确保导航栏从左侧开始 */
     width: 100%;
-    color: white;
+    color: rgb(255, 255, 255);
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -99,7 +100,7 @@ html, body {
 .nav-links button {
     border: none;
     background: none; /* 去掉背景 */
-    color: rgb(255, 255, 255); /* 按钮文字颜色 */
+    color: rgb(0, 0, 0); /* 按钮文字颜色 */
     margin: 0 10px;
     cursor: pointer;
     font-size: 16px;
