@@ -41,10 +41,10 @@ html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: hidden; /* 防止滚动条 */
+    overflow: hidden;
     height: 100%;
     /* background-image: linear-gradient(to bottom, #e0f7fa, #e4fcf2); 浅蓝到浅粉渐变 */
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
 }
 
 .navbar {
@@ -63,7 +63,7 @@ html, body {
 }
 
 .navbar:hover {
-    background-color: rgba(255, 255, 255, 0.3); /* 半透明背景 */
+    background-color: rgba(219, 219, 219, 0.3); /* 半透明背景 */
     backdrop-filter: blur(10px); /* 磨砂效果 */
 }
 
@@ -100,19 +100,19 @@ html, body {
 }
 
 .content {
-    margin: 200px auto; /* 垂直居中 */
+    margin: 80px auto; /* 垂直居中 */
     padding: 20px;
     z-index: 1;
     display: flex;
     justify-content: center; /* 水平居中 */
     align-items: center; /* 垂直居中 */
     width: fit-content; /* 宽度自适应子内容 */
-    height: fit-content; /* 高度自适应子内容 */
+    height: 100vh; /* 高度自适应子内容 */
     min-width: 300px; /* 最小宽度 */
     min-height: 200px; /* 最小高度 */
     background-color: rgba(255, 255, 255, 0.3); /* 半透明背景 */
     backdrop-filter: blur(10px); /* 磨砂效果 */
     border-radius: 15px; /* 圆角 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 添加阴影 */
 }
 </style>
