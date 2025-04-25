@@ -1,11 +1,16 @@
 <template>
-    <div class="ai-chat-container">
-        <h1 class="title">你好，我是智能助理</h1>
+    <div class="ai-chat-container" :class="{ 'sent-message': hasSentMessage }">
+        <h1 class="title" v-if="!hasSentMessage">你好，我是智能助理</h1>
         <div class="chat-input-container">
-            <textarea class="chat-input" placeholder="发送消息、输入 @ 或 / 选择技能"></textarea>
+            <textarea
+                class="chat-input"
+                v-model="message"
+                placeholder="发送消息、输入 @ 或 / 选择技能"
+                rows="4"
+            ></textarea>
             <div class="chat-actions">
-                <button class="action-button">深度思考</button>
-                <div class="icon-buttons">
+                <button class="action-button" @click="sendMessage">发送</button>
+                <div class="icon-buttons" v-if="!hasSentMessage">
                     <button class="icon-button">📎</button>
                     <button class="icon-button">🎨</button>
                     <button class="icon-button">🎤</button>
@@ -13,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="quick-actions">
+        <div class="quick-actions" v-if="!hasSentMessage">
             <button class="quick-action">帮我写作</button>
             <button class="quick-action">图像生成</button>
             <button class="quick-action">AI 搜索</button>
@@ -22,11 +27,33 @@
             <button class="quick-action">翻译</button>
             <button class="quick-action">更多</button>
         </div>
+        <div class="response-container" v-if="hasSentMessage">
+            <p class="response-text">你好！有什么我可以帮助你的吗？</p>
+            <div class="response-options">
+                <button class="response-option">你是如何被训练的？</button>
+                <button class="response-option">你都有哪些功能？</button>
+                <button class="response-option">给我讲个笑话。</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            message: '',
+            hasSentMessage: false,
+        };
+    },
+    methods: {
+        sendMessage() {
+            if (this.message.trim() !== '') {
+                this.hasSentMessage = true;
+            }
+        },
+    },
+};
 </script>
 
 <style>
@@ -35,6 +62,7 @@ export default {};
     margin: 30px auto;
     text-align: center;
     font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
 }
 
 .title {
@@ -50,6 +78,7 @@ export default {};
     position: relative;
     margin: 20px auto;
     width: 90%;
+    transition: all 0.3s ease;
 }
 
 .chat-input {
@@ -59,7 +88,7 @@ export default {};
     font-size: 16px;
     resize: none;
     border: none;
-    outline:none;
+    outline: none;
     overflow: auto;
 }
 
@@ -82,7 +111,7 @@ export default {};
 }
 
 .action-button:hover {
-    color: #ffffff;
+    background-color: #e2e2e2;
 }
 
 .icon-buttons {
@@ -117,6 +146,37 @@ export default {};
 }
 
 .quick-action:hover {
+    background-color: #e2e2e2;
+}
+
+.response-container {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.response-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.response-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.response-option {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.response-option:hover {
     background-color: #e2e2e2;
 }
 </style>

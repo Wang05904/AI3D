@@ -4,6 +4,7 @@
             <source src="/public/background/background.mp4" type="video/mp4" />
             您的浏览器不支持视频播放。
         </video> -->
+        <div class="background"></div>
         <header class="navbar">
             <div class="navbar-container">
                 <div class="logo" @click="navigate('/')">AI3D 功能区</div>
@@ -41,18 +42,10 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     overflow: hidden; /* 防止滚动条 */
-    background-color: linear-gradient(to bottom, #f7f7f7, #e5e5e5);
-}
-
-/* .background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     height: 100%;
-    object-fit: cover; 
-    z-index: -1;
-} */
+    /* background-image: linear-gradient(to bottom, #e0f7fa, #e4fcf2); 浅蓝到浅粉渐变 */
+    background-color: aliceblue;
+}
 
 .navbar {
     height: 50px;

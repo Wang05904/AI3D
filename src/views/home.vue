@@ -14,20 +14,28 @@
         <full-page :options="options" ref="fullpage">
             <div class="section video-section">
                 <video autoplay muted loop class="background-video">
-                    <source src="/background/background.mp4" type="video/mp4" />
+                    <source src="/background/bg1.mp4" type="video/mp4" />
                     您的浏览器不支持视频播放。
                 </video>
                 <div class="content-overlay">
                     <button @click="goToFeatures" class="action-button">立即体验</button>
                 </div>
             </div>
-            <div class="section" style="background-color: #ff5f45;">
-                <div style="text-align: center; height: 100vh; display: flex; justify-content: center; align-items: center;">
+            <div class="section video-section">
+                <video autoplay muted loop class="background-video">
+                    <source src="/background/bg2.mp4" type="video/mp4" />
+                    您的浏览器不支持视频播放。
+                </video>
+                <div class="content-overlay">
                     <button @click="goToFeatures" class="action-button">立即体验</button>
                 </div>
             </div>
-            <div class="section" style="background-color: #0798ec;">
-                <div style="text-align: center; height: 100vh; display: flex; justify-content: center; align-items: center;">
+            <div class="section video-section">
+                <video autoplay muted loop class="background-video">
+                    <source src="/background/bg3.mp4" type="video/mp4" />
+                    您的浏览器不支持视频播放。
+                </video>
+                <div class="content-overlay">
                     <button @click="goToFeatures" class="action-button">立即体验</button>
                 </div>
             </div>
