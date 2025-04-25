@@ -12,7 +12,7 @@
         <div class="chat-input-container"
             :style="hasSentMessage ? { boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', botton: '20px' } : { margin: 'auto' }">
             <textarea class="chat-input" v-model="newMessage" placeholder="发送消息、输入 @ 或 / 选择技能" rows="4"
-                @keyup.enter="sendMessage"></textarea>
+                @keyup.enter="sendMessage" autofocus></textarea>
             <div class="chat-actions">
                 <div class="icon-buttons">
                     <button class="icon-button">📎</button>
@@ -32,6 +32,7 @@ export default {
         return {
             newMessage: '',
             messages: [],
+            isLoading: false,
         };
     },
     computed: {
@@ -41,7 +42,8 @@ export default {
     },
     methods: {
         sendMessage() {
-            if (this.newMessage.trim() !== '') {
+            if (this.newMessage.trim() !== '' && !this.isLoading) {
+                this.isLoading=true;
                 // 用户消息
                 this.messages.push({ text: this.newMessage, isUser: true });
                 this.newMessage = '';
@@ -49,10 +51,10 @@ export default {
                 // 模拟机器人回复
                 setTimeout(() => {
                     this.messages.push({ text: '这是机器人的回复', isUser: false });
+                    this.isLoading=false;
                     this.scrollToBottom(); // 滚动到底部
                 }, 1000);
             }
-            
         },
         scrollToBottom() {
             if(this.$refs.responseContainer){
