@@ -83,7 +83,7 @@
 
 .navbar-container {
     display: flex;
-    justify-content: space-between; /* 左右对齐 */
+    justify-content: center; /* 左右对齐 */
     align-items: center; /* 垂直居中 */
     width: 100%;
 }

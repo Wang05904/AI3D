@@ -9,13 +9,7 @@
             <div class="navbar-container">
                 <div class="logo" @click="navigate('/')">AI3D 功能区</div>
                 <nav class="nav-links">
-                    <button @click="navigate('ai-qa')">AI问答</button>
-                    <button @click="navigate('text-to-image')">文生图</button>
-                    <button @click="navigate('image-edit')">图片修改</button>
-                    <button @click="navigate('model-gen')">模型生成</button>
-                    <button @click="navigate('model-edit')">模型修改</button>
-                    <button @click="navigate('preview')">预览</button>
-                    <button @click="navigate('video-gen')">视频生成</button>
+                    <button v-for="link in links" :key="link.route" :class="{ active: $route.path === `/${link.route}`  }" @click="navigate(link.route)">{{ link.label }}</button>
                 </nav>
             </div>
         </header>
@@ -27,26 +21,45 @@
 
 <script>
 export default {
+    data() {
+        return {
+            links: [
+                { label: 'AI问答', route: 'ai-qa' },
+                { label: '文生图', route: 'text-to-image' },
+                { label: '图片修改', route: 'image-edit' },
+                { label: '模型生成', route: 'model-gen' },
+                { label: '模型修改', route: 'model-edit' },
+                { label: '预览', route: 'preview' },
+                { label: '视频生成', route: 'video-gen' },
+            ],
+        };
+    },
     methods: {
         navigate(route) {
             this.$router.push(`/${route}`);
+        },
+    },
+    mounted() {
+        // 设置默认的 active 类
+        if (this.$route.path === '/workspace' || this.$route.path === '/ai-qa') {
+            this.$router.push('/ai-qa'); // 默认跳转到 AI问答
         }
-    }
+    },
 };
 </script>
 
-<style>
+<style scoped>
 /* 重置全局样式 */
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%; /* 确保占满视口高度 */
     box-sizing: border-box;
-    overflow: hidden;
-    height: 100%;
-    /* background-image: linear-gradient(to bottom, #e0f7fa, #e4fcf2); 浅蓝到浅粉渐变 */
-    /* background-color: aliceblue; */
 }
-
+.workspace{
+    height: 100%;
+    overflow: hidden;
+}
 .navbar {
     height: 50px;
     position: fixed;
@@ -76,6 +89,8 @@ html, body {
 }
 
 .logo {
+    position: absolute;
+    left: 10%;
     font-size: 20px;
     font-weight: bold;
     color: rgb(0, 0, 0);
@@ -93,23 +108,30 @@ html, body {
 .nav-links button {
     border: none;
     background: none; /* 去掉背景 */
-    color: rgb(0, 0, 0); /* 按钮文字颜色 */
+    color: rgb(0, 0, 0); /* 默认文字颜色 */
     margin: 0 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: color 0.3s ease; /* 添加颜色过渡效果 */
+}
+
+.nav-links button.active {
+    color: green; /* 当前页面的文字变成绿色 */
+    font-weight: bold; /* 可选：加粗当前页面的文字 */
 }
 
 .content {
     margin: 80px auto; /* 垂直居中 */
-    padding: 20px;
+    margin-bottom: 0;
+    padding: 0;
     z-index: 1;
     display: flex;
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    /* justify-content: center; 水平居中 */
+    /* align-items: center; 垂直居中 */
     width: fit-content; /* 宽度自适应子内容 */
-    height: 100vh; /* 高度自适应子内容 */
+    height: fit-content;
+    min-height: calc(100vh - 160px);
     min-width: 300px; /* 最小宽度 */
-    min-height: 200px; /* 最小高度 */
     background-color: rgba(255, 255, 255, 0.3); /* 半透明背景 */
     backdrop-filter: blur(10px); /* 磨砂效果 */
     border-radius: 15px; /* 圆角 */

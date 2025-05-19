@@ -8,6 +8,8 @@ import ModelGen from '../views/model-gen.vue';
 import ModelEdit from '../views/model-edit.vue';
 import Preview from '../views/preview.vue';
 import VideoGen from '../views/video-gen.vue';
+import ModelViewer from '../components/ModelViewer.vue';
+import ModelEditViewer from '../components/ModelEditViewer.vue';
 
 const routes = [
     { path: '/', component: Home },
@@ -23,7 +25,8 @@ const routes = [
           { path: '/video-gen', component: VideoGen },
         ]
     },
-    
+    {path:'/model-viewer',component:ModelViewer,},
+    {path:'/model-edit-viewer',component:ModelEditViewer,}
 ];
 
 const router = createRouter({

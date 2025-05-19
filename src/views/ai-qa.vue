@@ -10,7 +10,7 @@
         </div>
         <h1 class="title" v-if="!hasSentMessage">你好，我是智能助理</h1>
         <div class="chat-input-container"
-            :style="hasSentMessage ? { boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', botton: '20px' } : { margin: 'auto' }">
+            :style="hasSentMessage ? { boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' } : { margin: 'auto' }">
             <textarea class="chat-input" v-model="newMessage" placeholder="发送消息、输入 @ 或 / 选择技能" rows="4"
                 @keyup.enter="sendMessage" autofocus></textarea>
             <div class="chat-actions">
@@ -18,7 +18,9 @@
                     <button class="icon-button">📎</button>
                     <button class="icon-button">🎨</button>
                     <button class="icon-button">🎤</button>
-                    <button class="icon-button" @click="sendMessage"><img src="../../public/icon/发送.png"
+                    <button class="icon-button" @click="sendMessage" v-if="!isLoading"><img src="../../public/icon/发送.png"
+                            alt=""></button>
+                    <button class="icon-button" @click="sendMessage" v-else><img src="../../public/icon/loading.gif"
                             alt=""></button>
                 </div>
             </div>
@@ -27,6 +29,8 @@
 </template>
 
 <script>
+import { getDialogFlowResponse } from '@/api/index'; // 引入封装好的 API 方法
+import {Marked} from 'marked'; // 引入 marked 库用于 Markdown 转换
 export default {
     data() {
         return {
@@ -41,28 +45,59 @@ export default {
         }
     },
     methods: {
-        sendMessage() {
+        async sendMessage() {
             if (this.newMessage.trim() !== '' && !this.isLoading) {
-                this.isLoading=true;
+                this.isLoading = true;
+
                 // 用户消息
                 this.messages.push({ text: this.newMessage, isUser: true });
+                const userMessage = this.newMessage; // 保存用户输入
                 this.newMessage = '';
                 this.scrollToBottom(); // 滚动到底部
-                // 模拟机器人回复
-                setTimeout(() => {
-                    this.messages.push({ text: '这是机器人的回复', isUser: false });
-                    this.isLoading=false;
-                    this.scrollToBottom(); // 滚动到底部
-                }, 1000);
+
+                try {
+                    // 调用封装的流式返回接口
+                    const stream = await getDialogFlowResponse(userMessage);
+
+                    // 处理流式返回
+                    let botMessage = '';
+                    for await (const chunk of stream) {
+                        botMessage += chunk; // 拼接流式返回的内容
+                        this.updateBotMessage(botMessage); // 实时更新机器人消息
+                        this.scrollToBottom(); // 滚动到底部
+                        this.convertMarkdowntoHTML(); // 转换 Markdown 格式到 HTML
+                    }
+
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error('获取对话流式返回失败:', error);
+                    this.messages.push({ text: '机器人回复失败，请稍后重试。', isUser: false });
+                    this.isLoading = false;
+                }
+            }
+        },
+        convertMarkdowntoHTML(){
+            document.getElementById("responseContainer").innerHTML = marked(this.messages[this.messages.length-1].text);
+        },
+        updateBotMessage(content) {
+            // 如果机器人消息还未添加到消息列表中，则添加
+            if (!this.messages.some((msg) => !msg.isUser)) {
+                this.messages.push({ text: '', isUser: false });
+            }
+
+            // 更新最后一条机器人的消息内容
+            const botMessage = this.messages.find((msg) => !msg.isUser);
+            if (botMessage) {
+                botMessage.text = content;
             }
         },
         scrollToBottom() {
             if(this.$refs.responseContainer){
             var div=this.$refs.responseContainer;
-            console.log(div);
+            // console.log(div);
             setTimeout(() => {
                 div.scrollTop = div.scrollHeight;
-            console.log(div.scrollHeight);
+            // console.log(div.scrollHeight);
             }, 10);
             }
 	        
@@ -71,14 +106,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* 确保占满视口高度 */
+    box-sizing: border-box;
+}
 .ai-chat-container {
-    height: 100%;
+    /* height: 100vh; */
     max-width: 800px;
-    margin: 30px auto;
     text-align: center;
     font-family: Arial, sans-serif;
     transition: all 0.3s ease;
+    max-height: calc(100vh - 160px);
 }
 
 .title {
@@ -92,7 +134,7 @@ export default {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 20px;
-    position: relative;
+    /* position: relative; */
     /* margin: 20px auto; */
     width: 800px;
     transition: all 0.3s ease;
